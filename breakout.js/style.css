@@ -1,0 +1,13 @@
+div.background {
+  position: fixed;
+  background: url('images/Background/background.jpg');
+  background-size: cover;
+  left: CALC(50% - 400px);
+  top: CALC(50% - 250px);
+}
+
+canvas {
+  border: 1px solid blue;
+  left: CALC(50% - 400px);
+  top: CALC(50% - 250px);
+}

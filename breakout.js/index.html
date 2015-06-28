@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Breakout</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body>
+    <div class="background">
+      <canvas></canvas>
+    </div>
+
+    <script type="application/javascript" src="lib/brick.js"></script>
+    <script type="application/javascript" src="lib/ball.js"></script>
+    <script type="application/javascript" src="lib/paddle.js"></script>
+    <script type="application/javascript" src="lib/game.js"></script>
+    <script type="application/javascript" src="lib/gameView.js"></script>
+
+    <script type="application/javascript">
+      (function () {
+        var canvasEl = document.getElementsByTagName("canvas")[0];
+        canvasEl.width = Breakout.Game.DIM_X;
+        canvasEl.height = Breakout.Game.DIM_Y;
+        var ctx = canvasEl.getContext("2d");
+        var game = new Breakout.Game();
+        canvasEl.addEventListener('mousemove', function (e) {
+          game.movePaddle(e);
+        });
+        canvasEl.addEventListener('click', function (e) {
+          game.mouseClick(e);
+        });
+        new Breakout.GameView(game, ctx).start();
+      })();
+    </script>
+  </body>
+</html>
