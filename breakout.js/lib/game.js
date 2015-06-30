@@ -7,8 +7,9 @@
     this.addBricks();
     this.addBall();
     this.addPaddle();
-    this.gameStarted = false;
+    // this.gameStarted = false;
     this.gameOver = false;
+    this.userWins = false;
   };
 
   Game.prototype.addBall = function () {
@@ -30,6 +31,7 @@
 
   Game.prototype.addBricks = function () {
     this.bricks = [];
+    this.brickCount = 0;
     var x = Game.BRICK_X_OFFSET;
     var y = Game.BRICK_Y_OFFSET;
 
@@ -40,6 +42,7 @@
           position: [x, y],
           game: this
         }));
+        this.brickCount++;
         x += Game.BRICK_WIDTH + Game.BRICK_SEP;
       }
       y += Game.BRICK_HEIGHT + Game.BRICK_SEP;
@@ -113,16 +116,16 @@
   Game.DIM_Y = 500;
   Game.FPS = 60;
 
-  Game.BRICK_X_OFFSET = 5;
-  Game.BRICK_Y_OFFSET = 50;
+  Game.BRICK_X_OFFSET = 10;
+  Game.BRICK_Y_OFFSET = 70;
 
-  Game.NUM_BRICK_ROWS = 8;
+  Game.NUM_BRICK_ROWS = 5;
   Game.NUM_BRICKS_PER_ROW = 6;
 
   Game.BRICK_HEIGHT = 15;
-  Game.BRICK_SEP = 3;
-  Game.BRICK_WIDTH = 
-    (Game.DIM_X - Game.BRICK_X_OFFSET * 2 - Game.BRICK_SEP *  
+  Game.BRICK_SEP = 10;
+  Game.BRICK_WIDTH =
+    (Game.DIM_X - Game.BRICK_X_OFFSET * 2 - Game.BRICK_SEP *
       (Game.NUM_BRICKS_PER_ROW - 1)
     ) / Game.NUM_BRICKS_PER_ROW;
 

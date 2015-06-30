@@ -35,12 +35,18 @@
       if (this.collidesWith(this.game.bricks[i])) {
         this.bounceOff(this.game.bricks[i]);
         this.game.bricks[i] = null;
+        this.game.brickCount--;
+        if (this.game.brickCount <= 0) {
+          this.game.userWins = true;
+        }
         break;
       }
     }
 
     if (this.collidesWith(this.game.paddle)) {
-      this.bounceOff(this.game.paddle);
+      if (this.vy > 0) {
+        this.bounceOff(this.game.paddle);
+      }
     }
   };
 
