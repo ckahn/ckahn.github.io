@@ -8,29 +8,34 @@
     this.game = game;
   };
 
+  GameView.prototype.checkEndGame = function () {
+    if (this.game.gameOver) {
+      this.stop();
+      this.showLabel('You lose');
+    } else if (this.game.userWins) {
+      this.stop();
+      this.showLabel('YOU WIN!');
+    }
+  };
+
   GameView.prototype.start = function () {
     var gameView = this;
     this.timerId = setInterval(
       function () {
         gameView.game.step();
         gameView.game.draw(gameView.ctx);
+        gameView.showLivesCount();
         if (!gameView.game.started) {
           gameView.showLabel('Click paddle');
         }
-        if (gameView.game.gameOver) {
-          gameView.stop();
-          gameView.showLabel('GAME OVER');
-        } else if (gameView.game.userWins) {
-          gameView.stop();
-          gameView.showLabel('YOU WIN!');
-        }
+        gameView.checkEndGame();
       }, 1000 / Breakout.Game.FPS
     );
   };
 
   GameView.prototype.showLabel = function (str) {
     var gameView = this;
-    gameView.ctx.font = 'bold 64px "new courier", monospace';
+    gameView.ctx.font = 'bold 64pt "new courier", monospace';
     var content = str;
     var text = gameView.ctx.measureText(content);
     gameView.ctx.fillText(
@@ -39,6 +44,14 @@
       gameView.ctx.canvas.height/2 - 50
     );
   }
+
+  GameView.prototype.showLivesCount = function () {
+    var gameView = this;
+    var lives = gameView.game.livesCount;
+    gameView.ctx.font = 'bold 12pt "new courier", monospace';
+    var content = 'Lives: ' + lives
+    gameView.ctx.fillText(content, 5, 15);
+  };
 
   GameView.prototype.stop = function () {
     clearInterval(this.timerId);

@@ -24,7 +24,12 @@
     } else if (this.x >= Breakout.Game.DIM_X - this.diameter) {
       this.vx *= -1;
     } else if (this.y >= Breakout.Game.DIM_Y) {
-      this.game.end();
+      if (this.game.livesCount == 0) {
+        this.game.end();
+      } else {
+        this.game.startOver();
+        this.game.livesCount -= 1;
+      }
     } else if (this.x <= 0) {
       this.vx *= -1;
     }
@@ -50,44 +55,41 @@
     }
   };
 
+  Ball.prototype.collidesLeftTop = function (el) {
+    return this.x >= el.position[0] &&
+      this.x <= el.position[0] + el.width &&
+      this.y >= el.position[1] &&
+      this.y <= el.position[1] + el.height
+  };
+
+  Ball.prototype.collidesLeftBottom = function (el) {
+    return this.x >= el.position[0] &&
+      this.x <= el.position[0] + el.width &&
+      this.y + this.diameter >= el.position[1] &&
+      this.y + this.diameter <= el.position[1] + el.height
+  };
+
+  Ball.prototype.collidesRightTop = function (el) {
+    return this.x + this.diameter >= el.position[0] &&
+      this.x + this.diameter <= el.position[0] + el.width &&
+      this.y >= el.position[1] &&
+      this.y <= el.position[1] + el.height
+  };
+
+  Ball.prototype.collidesRightBottom = function (el) {
+    return this.x + this.diameter >= el.position[0] &&
+      this.x + this.diameter <= el.position[0] + el.width &&
+      this.y + this.diameter >= el.position[1] &&
+      this.y + this.diameter <= el.position[1] + el.height
+  };
+
   Ball.prototype.collidesWith = function (el) {
     if (!el) {
       return false;
     }
-
-    if (
-      this.x >= el.position[0] &&
-      this.x <= el.position[0] + el.width &&
-      this.y >= el.position[1] &&
-      this.y <= el.position[1] + el.height
-    ) {
-      console.log('LEFT TOP COLLISION');
-      return true;
-    } else if (
-      this.x + this.diameter >= el.position[0] &&
-      this.x + this.diameter <= el.position[0] + el.width &&
-      this.y >= el.position[1] &&
-      this.y <= el.position[1] + el.height
-    ) {
-      console.log('RIGHT TOP COLLISION');
-      return true;
-    } else if (
-      this.x + this.diameter >= el.position[0] &&
-      this.x + this.diameter <= el.position[0] + el.width &&
-      this.y + this.diameter >= el.position[1] &&
-      this.y + this.diameter <= el.position[1] + el.height
-    ) {
-      console.log('BOTTOM RIGHT COLLISION');
-      return true;
-    } else if (
-      this.x >= el.position[0] &&
-      this.x <= el.position[0] + el.width &&
-      this.y + this.diameter >= el.position[1] &&
-      this.y + this.diameter <= el.position[1] + el.height
-    ) {
-      console.log('BOTTOM LEFT COLLISION');
-      return true;
-    }
+  
+    return this.collidesLeftTop(el) || this.collidesRightTop(el) ||
+      this.collidesRightBottom(el) || this.collidesLeftBottom(el)
   };
 
   Ball.prototype.collides = function () {
@@ -115,11 +117,11 @@
   };
 
   Ball.prototype.start = function () {
-    this.vx = 4;
-    this.vy = 4;
+    this.vx = 6;
+    this.vy = 6;
   };
 
-  Ball.DIAMETER = 18;
+  Ball.DIAMETER = 20;
   Ball.VELOCITY_X = 0;
   Ball.VELOCITY_Y = 0;
 })();

@@ -7,9 +7,9 @@
     this.addBricks();
     this.addBall();
     this.addPaddle();
-    // this.gameStarted = false;
     this.gameOver = false;
     this.userWins = false;
+    this.livesCount = 2;
   };
 
   Game.prototype.addBall = function () {
@@ -31,22 +31,25 @@
 
   Game.prototype.addBricks = function () {
     this.bricks = [];
-    this.brickCount = 0;
+    this.brickCount = 0; // array might contain nulls
     var x = Game.BRICK_X_OFFSET;
     var y = Game.BRICK_Y_OFFSET;
 
     for (var i = 0; i < Game.NUM_BRICK_ROWS; i++) {
-      for (var j = 0; j < Game.NUM_BRICKS_PER_ROW; j++) {
-        this.bricks.push(new Breakout.Brick({
-          colorIdx: i,
-          position: [x, y],
-          game: this
-        }));
-        this.brickCount++;
-        x += Game.BRICK_WIDTH + Game.BRICK_SEP;
-      }
+      this.addBricksToRow(x, y);
       y += Game.BRICK_HEIGHT + Game.BRICK_SEP;
       x = Game.BRICK_X_OFFSET;
+    }
+  };
+
+  Game.prototype.addBricksToRow = function (x, y) {
+    for (var j = 0; j < Game.NUM_BRICKS_PER_ROW; j++) {
+      this.bricks.push(new Breakout.Brick({
+        position: [x, y],
+        game: this
+      }));
+      this.brickCount++;
+      x += Game.BRICK_WIDTH + Game.BRICK_SEP;
     }
   };
 
@@ -81,7 +84,6 @@
   };
 
   Game.prototype.mouseClick = function (e) {
-    console.log('CLICK');
     if (!this.started) {
       this.ball.start();
       this.started = true;
@@ -104,6 +106,14 @@
       }
     }
     return foundBrick;
+  };
+
+  Game.prototype.startOver = function () {
+    this.ball.x = Game.DIM_X / 2;
+    this.ball.y = Game.DIM_Y / 2;
+    this.ball.vx = Breakout.Ball.VELOCITY_X;
+    this.ball.vy = Breakout.Ball.VELOCITY_Y;
+    this.started = false;
   };
 
   Game.prototype.step = function () {
