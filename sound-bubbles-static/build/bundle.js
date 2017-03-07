@@ -193,6 +193,9 @@ module.exports = function () {
 
 	Synth.prototype.stop = function () {
 		this.osc.stop();
+		this.osc.disconnect();
+		this.gain.disconnect();
+		this.panner.disconnect();
 	};
 
 	Synth.prototype.setPositionX = function (x) {
